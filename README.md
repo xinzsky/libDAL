@@ -43,7 +43,7 @@ sharding ID范围方式中记录ID不能采用hash，hash计算得出的ID范围
 sharding确定了记录存放在哪组数据库，lb根据记录访问方式确定记录存放该组中哪个数据库。  
 lb支持的轮转类型：
 * RR(round robin)
-* WRR(round robin with weight )
+* WRR(with weight round robin)
 
 ## Failover
 如果数据库故障，可以设置该数据库故障时间。
