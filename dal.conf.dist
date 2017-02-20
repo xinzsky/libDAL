@@ -1,0 +1,31 @@
+# DAL(Data Access Layer) configuration 
+
+[ServerPool]
+#servername host:port[:logmethod:logdir]
+servers     page0 page1 page2 
+page0       124.254.44.146:60010:w:/tmp
+page1       124.254.44.146:60011:w:/tmp
+page2       124.254.44.146:60012:w:/tmp
+
+[Sharding]
+# sharding type: mod range lookup(unsupport)
+type        mod
+# record PK Type: uint uint_str uint_hex string binary(64bit) 
+PKType   
+# master servers name
+servers     page0 page1 page2 
+# sharding type = range, master server id range:
+# page0_range min max
+# page1_range min max
+# page2_range min max
+
+
+# LoadBalance type: none rr wrr
+#    master server: master_server:rw/r/w:weight slaver_server:rw/r/w:weight
+#         failkeep: num unit(mins/secs/hours/days)
+[LoadBalance]
+Type        none
+FailKeep    1mins
+page0       page0:rw:1
+page1       page1:rw:1
+page2       page2:rw:1
