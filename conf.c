@@ -8,7 +8,7 @@
 #include "xmalloc.h"
 #include "xstring.h"
 
-/* conf ÎÄ¼ş±È½Ï´óµÄ»°£¬½¨Òé¶¨ÒåÒ»ÏÂ WITH_HASH  */
+/* conf æ–‡ä»¶æ¯”è¾ƒå¤§çš„è¯ï¼Œå»ºè®®å®šä¹‰ä¸€ä¸‹ WITH_HASH  */
 /* uncomment the next line to enable hashing */
 
 /* #define WITH_HASH */
@@ -40,19 +40,19 @@ typedef struct
 {
   char *section_name;
   int  key_count;
-  int  current_size; /* section ÖĞµ±Ç°ÒÑ·ÖÅäÄÚ´æµÄkeyÊı */
-  conf_key_t  *keys;/* Ö¸ÏòkeyÊı×é*/
+  int  current_size; /* section ä¸­å½“å‰å·²åˆ†é…å†…å­˜çš„keyæ•° */
+  conf_key_t  *keys;/* æŒ‡å‘keyæ•°ç»„*/
 #ifdef WITH_HASH
-  conf_key_t * hash[CONF_HASH_KEY_SIZE];/* Ö¸ÏòkeyµÄÖ¸ÕëÊı×é */
+  conf_key_t * hash[CONF_HASH_KEY_SIZE];/* æŒ‡å‘keyçš„æŒ‡é’ˆæ•°ç»„ */
 #endif
 }conf_section_t;
 
 typedef struct {
-  conf_section_t *psection;/* ÓÃÓÚÏßĞÔ²éÕÒµÄÊı¾İ£¬Ö¸ÏòsectionÊı×é */
+  conf_section_t *psection;/* ç”¨äºçº¿æ€§æŸ¥æ‰¾çš„æ•°æ®ï¼ŒæŒ‡å‘sectionæ•°ç»„ */
   int section_count;
-  int current_size;  /* µ±Ç°ÒÑ·ÖÅäÄÚ´æµÄsectionÊı */
+  int current_size;  /* å½“å‰å·²åˆ†é…å†…å­˜çš„sectionæ•° */
 #ifdef WITH_HASH
-  conf_section_t  **m_Hash; /* ÓÃÓÚHash²éÕÒµÄÊı¾İ£¬Ö¸ÏòsectionµÄÖ¸ÕëÊı×é, Ö¸ÕëÊı×éÖĞµÄÖ¸ÕëÖ¸ÏòÒ»¸ö½Ú*/
+  conf_section_t  **m_Hash; /* ç”¨äºHashæŸ¥æ‰¾çš„æ•°æ®ï¼ŒæŒ‡å‘sectionçš„æŒ‡é’ˆæ•°ç»„, æŒ‡é’ˆæ•°ç»„ä¸­çš„æŒ‡é’ˆæŒ‡å‘ä¸€ä¸ªèŠ‚*/
 #endif
 }cfgdata_t;
 
@@ -77,7 +77,7 @@ void *init_conf(void)
   return cd;
 }
 
-// Ö§³ÖÅäÖÃ¿çĞĞ
+// æ”¯æŒé…ç½®è·¨è¡Œ
 static char *getconfline(FILE *fp,char *linebuf,int bufsize)
 {
   int len,pos,span;
@@ -149,7 +149,7 @@ int load_conf(void *cfgdata,const char *filename)
 
   while (getconfline(fp,str,CONF_LINE_MAX_LEN*8+1)) // fgets(str, CONF_LINE_MAX_LEN + 1, fp)
   {
-    trim(str); /* trim all the blanks or linefeeds(»»ĞĞ) */
+    trim(str); /* trim all the blanks or linefeeds(æ¢è¡Œ) */
 
     /* skip all comment lines or empty lines */
     if (!str[0] || str[0] == ';' || str[0] == '/' || str[0] == '#')
@@ -169,12 +169,12 @@ int load_conf(void *cfgdata,const char *filename)
     }
     else
     {
-      /* ÅäÖÃÏîÊÇÃûÖµ¶Ô£¬ÖĞ¼äÓÃÒ»¸ö»ò¶à¸ö¿Õ¸ñ»ò´¹Ö±ÖÆ±í·û¼ä¸ô */
+      /* é…ç½®é¡¹æ˜¯åå€¼å¯¹ï¼Œä¸­é—´ç”¨ä¸€ä¸ªæˆ–å¤šä¸ªç©ºæ ¼æˆ–å‚ç›´åˆ¶è¡¨ç¬¦é—´éš” */
       if (((p = strchr(str, ' ')) != NULL) || ((p = strchr(str, '\t')) != NULL) || ((p = strchr(str, '=')) != NULL))
       {
         *(p++) = '\0';
-        trim(str); /* strÖ¸Ïòkey name */
-        trim(p);   /* pÖ¸Ïòkey value */
+        trim(str); /* stræŒ‡å‘key name */
+        trim(p);   /* pæŒ‡å‘key value */
         set_key_value(cd,section, str, p);
       }
     }
@@ -184,7 +184,7 @@ int load_conf(void *cfgdata,const char *filename)
   return 0;
 }
 
-// ÓÉÓÚÊ¹ÓÃÁËstrtok()²»ÄÜÓÃÓÚ¶àÏß³Ì»·¾³.¶àÏß³Ì»·¾³ĞèÒªĞŞ¸ÄÎªstrtok_r()
+// ç”±äºä½¿ç”¨äº†strtok()ä¸èƒ½ç”¨äºå¤šçº¿ç¨‹ç¯å¢ƒ.å¤šçº¿ç¨‹ç¯å¢ƒéœ€è¦ä¿®æ”¹ä¸ºstrtok_r()
 int parse_conf(void *cfgdata,char *conf_str)
 {
   char str[CONF_LINE_MAX_LEN+1];
@@ -208,7 +208,7 @@ int parse_conf(void *cfgdata,char *conf_str)
       strcpy(str, line);
     else
       return -1;
-    trim(str); /* trim all the blanks or linefeeds(»»ĞĞ) */
+    trim(str); /* trim all the blanks or linefeeds(æ¢è¡Œ) */
 
     /* skip all comment lines or empty lines */
     if (!str[0] || str[0] == ';' || str[0] == '/' || str[0] == '#')
@@ -229,12 +229,12 @@ int parse_conf(void *cfgdata,char *conf_str)
     }
     else
     {
-      /* ÅäÖÃÏîÊÇÃûÖµ¶Ô£¬ÖĞ¼äÓÃÒ»¸ö»ò¶à¸ö¿Õ¸ñ»ò´¹Ö±ÖÆ±í·û¼ä¸ô */
+      /* é…ç½®é¡¹æ˜¯åå€¼å¯¹ï¼Œä¸­é—´ç”¨ä¸€ä¸ªæˆ–å¤šä¸ªç©ºæ ¼æˆ–å‚ç›´åˆ¶è¡¨ç¬¦é—´éš” */
       if (((p = strchr(str, '=')) != NULL) || ((p = strchr(str, ' ')) != NULL) || ((p = strchr(str, '\t')) != NULL))
       {
         *(p++) = '\0';
-        trim(str); /* strÖ¸Ïòkey name */
-        trim(p);   /* pÖ¸Ïòkey value */
+        trim(str); /* stræŒ‡å‘key name */
+        trim(p);   /* pæŒ‡å‘key value */
         set_key_value(cd,section, str, p);
       }
     }
@@ -273,7 +273,7 @@ int save_conf(void *cfgdata,const char *filename)
   return 0;
 }
 
-/* ÊÍ·ÅÅäÖÃÄ£¿éÖĞµÄÄÚ´æ×ÊÔ´*/
+/* é‡Šæ”¾é…ç½®æ¨¡å—ä¸­çš„å†…å­˜èµ„æº*/
 void free_conf(void *cfgdata)
 {
   cfgdata_t *cd = (cfgdata_t *)cfgdata;
@@ -342,8 +342,8 @@ const char * get_key_value(void *cfgdata,const char *section, const char *key_na
 
 
 /* set the value in conf file */
-/* ¸Ãº¯Êı°Ñ<setcion_name,key_name,key_value>Ğ´µ½ÄÚ´æÖĞÅäÖÃÊı¾İ
-   Êı¾İ½á¹¹ÖĞ£¬Èç¹ûsection_name,key_name²»´æÔÚ£¬Ôò»á´´½¨Ò»¸ö½Ú¡¢Ò»¸ö¼ü²¢ÉèÖÃÖµ*/
+/* è¯¥å‡½æ•°æŠŠ<setcion_name,key_name,key_value>å†™åˆ°å†…å­˜ä¸­é…ç½®æ•°æ®
+   æ•°æ®ç»“æ„ä¸­ï¼Œå¦‚æœsection_name,key_nameä¸å­˜åœ¨ï¼Œåˆ™ä¼šåˆ›å»ºä¸€ä¸ªèŠ‚ã€ä¸€ä¸ªé”®å¹¶è®¾ç½®å€¼*/
 int  set_key_value(void *cfgdata,const char *section, const char *key_name, const char *set)
 {
   conf_section_t *psect = NULL;
@@ -563,7 +563,7 @@ static int valid(cfgdata_t *cd)
   return (cd->psection != NULL);
 }
 
-// min=max=0 ±íÊ¾´óĞ¡Ã»ÓĞÏŞÖÆ¡£notfoundÒ²ÊÇÄ¬ÈÏÖµ
+// min=max=0 è¡¨ç¤ºå¤§å°æ²¡æœ‰é™åˆ¶ã€‚notfoundä¹Ÿæ˜¯é»˜è®¤å€¼
 int getconfint(void *cfgdata,const char *section, const char *key, int isnull, int notfound, int min, int max)
 {
   const char *cp;
@@ -703,7 +703,7 @@ char *getconfmulti(void *cfgdata,const char *section, const char *key, int isnul
     v = xmalloc(len + 1);
     strcpy(v,cp);
     strsqueeze(v);
-    //trimid(cp, v, 1); ×¢Òâ: Ö»ÄÜÓÃÓÚasciiºÍgbk
+    //trimid(cp, v, 1); æ³¨æ„: åªèƒ½ç”¨äºasciiå’Œgbk
     n = strfragnum(v, sepstr);
     vv = (char **)xcalloc(n, sizeof(char *));
     split(v, sepstr, vv, n);
@@ -809,9 +809,9 @@ void get_conf(void *cfgdata,conf_t *conf,int confnum)
                                        (int)conf[i].p1,(int)conf[i].p2);
         break;
       case CONF_STR:
-        if((int)conf[i].p3) // ·µ»ØÕûÊı
+        if((int)conf[i].p3) // è¿”å›æ•´æ•°
           getconfstring(cfgdata,conf[i].section,conf[i].key,conf[i].isnull,conf[i].defval,(char **)conf[i].p1,(int *)conf[i].p3,(int)conf[i].p2,(int *)conf[i].r);
-        else  // ·µ»Ø×Ö·û´®
+        else  // è¿”å›å­—ç¬¦ä¸²
           *(char **)conf[i].r = getconfstring(cfgdata,conf[i].section,conf[i].key,conf[i].isnull,conf[i].defval,(char **)conf[i].p1,NULL,(int)conf[i].p2,NULL);
         break;
       case CONF_FLOAT:

@@ -12,11 +12,11 @@ enum
 };
 
 /*
- * �������Ϊ����: ��ѡ����ѡ����������Ҫ֪����Щ�Ǳ�ѡ�ģ���Щ�ǿ�ѡ�ġ�
- * ������ȡֵ��Դֻ������: Ҫô���û�ָ����Ҫô����Ĭ��ֵ��
- * ��ѡ�����������ֵ,��ѡ����������п��ޡ�
- * isnull����ָ��������������Ƿ�һ��Ҫ���û�ָ��ȡֵ��ֻ����û��Ĭ��ֵ�ı�ѡѡ�
- * defvalָ��������û�û��ָ���������Ĭ��ֵ��
+ * 配置项分为两类: 必选，可选。开发者需要知道哪些是必选的，哪些是可选的。
+ * 配置项取值来源只有两个: 要么由用户指定，要么采用默认值。
+ * 必选配置项必须有值,可选配置项则可有可无。
+ * isnull仅仅指的是这个配置项是否一定要求用户指定取值。只用于没有默认值的必选选项。
+ * defval指的是如果用户没有指定，则采用默认值。
 */
 
 
@@ -25,7 +25,7 @@ typedef struct
   char *section;
   char *key;
   int  type;
-  int isnull; //ָ�����������ֵ�Ƿ�������û�ָ��������û��Ĭ��ֵ�ı�ѡѡ�
+  int isnull; //指明该配置项的值是否必须由用户指定，用于没有默认值的必选选项。
   char *defval;
   void *p1;  //int:int min;multi:char ***mulval;string:char **vals; path: char*home;
   void *p2;  //int:int max;multi:char *sepstr;  string:int valnum;  path: char*dir;

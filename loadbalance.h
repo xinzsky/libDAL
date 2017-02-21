@@ -11,9 +11,9 @@
 #define LB_ACCESS_WRITE         2
 #define LB_ACCESS_RW            3
 
-#define FAIL_SERVER             -1  // ¹ÊÕÏ·şÎñÆ÷
-#define LAST_SERVER             -1  // ÉÏ´Î·ÃÎÊ·şÎñÆ÷µÄ³õÊ¼Öµ
-#define MAXWEIGHT_INIT          -1  // ×î´óÈ¨ÖØ³õÊ¼Öµ
+#define FAIL_SERVER             -1  // æ•…éšœæœåŠ¡å™¨
+#define LAST_SERVER             -1  // ä¸Šæ¬¡è®¿é—®æœåŠ¡å™¨çš„åˆå§‹å€¼
+#define MAXWEIGHT_INIT          -1  // æœ€å¤§æƒé‡åˆå§‹å€¼
 #define SERVERID_INIT           -1
 
 typedef struct {
@@ -26,15 +26,15 @@ typedef struct {
 typedef struct {
   int servernum;
   serverid_t *servers;
-  lb_status_t status;     // ÓÃÓÚ·şÎñÆ÷×éÄÚµÄÂÖÑ¯
+  lb_status_t status;     // ç”¨äºæœåŠ¡å™¨ç»„å†…çš„è½®è¯¢
 }lb_servergroup_t;
 
 typedef struct {
-  serverid_t sid;         // ³õÊ¼»¯Îª-1
+  serverid_t sid;         // åˆå§‹åŒ–ä¸º-1
   int access;
-  int weight;             // ³õÊ¼ÖµÎª0£¬weight = -1,±íÊ¾·şÎñÆ÷¹ÊÕÏ
-  int oriweight;          // µ±·şÎñÆ÷downÊ±£¬±£´æÔ­À´È¨ÖØÖµ
-  time_t downtime;        // ·şÎñÆ÷downÊ±¼ä
+  int weight;             // åˆå§‹å€¼ä¸º0ï¼Œweight = -1,è¡¨ç¤ºæœåŠ¡å™¨æ•…éšœ
+  int oriweight;          // å½“æœåŠ¡å™¨downæ—¶ï¼Œä¿å­˜åŸæ¥æƒé‡å€¼
+  time_t downtime;        // æœåŠ¡å™¨downæ—¶é—´
   
   // only used for master
   lb_servergroup_t *readgroup;
@@ -45,8 +45,8 @@ typedef struct {
   int type;
   int servernum;
   lb_server_t *servers;
-  int failkeep;          // ¹ÊÕÏ³ÖĞø¶à¾Ã×Ô¶¯»Ö¸´
-  int failnum;           // ¹ÊÕÏ·şÎñÆ÷¸öÊı
+  int failkeep;          // æ•…éšœæŒç»­å¤šä¹…è‡ªåŠ¨æ¢å¤
+  int failnum;           // æ•…éšœæœåŠ¡å™¨ä¸ªæ•°
 }lb_t;
 
 

@@ -337,7 +337,7 @@ void dal_del(void *dal)
   xfree(d);
 }
 
-// ·µ»Ø·þÎñÆ÷idºÍÖ÷»ú¡¢·þÎñÆ÷Ãû
+// è¿”å›žæœåŠ¡å™¨idå’Œä¸»æœºã€æœåŠ¡å™¨å
 int dal_getserver(void *dal,const char *pk,int pklen,int access,char *server)
 {
   int i;
@@ -354,7 +354,7 @@ int dal_getserver(void *dal,const char *pk,int pklen,int access,char *server)
     goto END;
   }
 
-  //¼ì²éÊÇ·ñÓÐ¹ÊÕÏµÄ·þÎñÆ÷ÐèÒª»Ö¸´
+  //æ£€æŸ¥æ˜¯å¦æœ‰æ•…éšœçš„æœåŠ¡å™¨éœ€è¦æ¢å¤
   if(d->lb.failnum && d->lb.failkeep) {
     now = time(NULL);
     for(i=0;i<d->lb.servernum;i++) {
